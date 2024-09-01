@@ -1,0 +1,17 @@
+
+  .footer-table {
+    background-color: #01101d; /* Azul escuro */
+    color: #ffffff; /* Texto branco por padrão */
+  }
+  .footer-table thead th {
+    background-color: #01101d; /* Azul escuro para cabeçalhos */
+    color: #ffffff; /* Texto branco para cabeçalhos */
+  }
+  .footer-table tbody td {
+    background-color: #01101d; /* Azul escuro mais claro para as células */
+    color: #b0b0b0; /* Texto cinza para o conteúdo */
+  }
+  .footer-table th, .footer-table td {
+    vertical-align: top; /* Alinha o texto ao topo das células */
+    padding: 0.75rem; /* Adiciona padding para melhorar o espaçamento */
+  }

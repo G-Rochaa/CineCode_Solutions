@@ -1,0 +1,58 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+/* Estilos globais */
+:host {
+  display: block;
+  background-color: #01101d; /* Azul fosco */
+  color: white;
+  height: 100vh;
+}
+
+/* Estilos de input com ícone */
+.input-group .input-group-text {
+  background-color: #01101d;
+  border: none;
+  color: white;
+}
+
+.input-group .form-control {
+  border-radius: 0;
+  background-color: #01101d;
+  color: white;
+  border: 1px solid #b0b0b0; /* Cor da borda */
+}
+
+.input-group .form-control::placeholder {
+  color: #b0b0b0; /* Cor do placeholder */
+}
+
+/* Estilo dos botões dropdown e do botão "Acesse ou Registre-se" */
+.dropdown .btn.dropdown-toggle,
+.btn-custom {
+    background-color: #01101d; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Remove bordas */
+    box-shadow: none; /* Remove sombras */
+    border-radius: 0; /* Remove arredondamento */
+    transition: none; /* Remove transições */
+}
+
+/* Remover alterações de estilo ao passar o mouse */
+.dropdown .btn.dropdown-toggle:hover,
+.dropdown .btn.dropdown-toggle:focus,
+.dropdown .btn.dropdown-toggle:active,
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+    background-color: #01101d; /* Mantém a cor de fundo */
+    color: white; /* Mantém a cor do texto */
+    box-shadow: none; /* Remove sombras */
+    border: none; /* Mantém sem borda */
+    transition: none; /* Sem animações */
+}
+
+.app-footer {
+  background-color: #01101d; /* Azul escuro */
+  color: #ffffff; /* Texto branco */
+  padding: 20px; /* Ajuste o padding conforme necessário */
+}
