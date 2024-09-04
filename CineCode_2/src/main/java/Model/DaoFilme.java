@@ -82,7 +82,7 @@ public class DaoFilme<E> {
 
 		return query.getResultList(); // Resultado do SELECT
 	}
-	
+
 	public List<E> obterTodosEmBreve() {
 		if (classe == null) {
 			throw new UnsupportedOperationException("Classe Nula");
@@ -93,14 +93,6 @@ public class DaoFilme<E> {
 		TypedQuery<E> query = em.createQuery(jpql, classe);
 
 		return query.getResultList(); // Resultado do SELECT
-	}
-
-	public List<String> obterGeneros() {
-		String jpql = "SELECT DISTINCT e.genero FROM " + classe.getName() + " e";
-
-		TypedQuery<String> query = em.createQuery(jpql, String.class);
-
-		return query.getResultList();
 	}
 
 	public void removerFilme(Filme filme) {
@@ -131,113 +123,145 @@ public class DaoFilme<E> {
 		}
 	}
 
+	public List<String> obterNomesGeneros() {
+		String jpql = "SELECT DISTINCT e.nome_genero FROM Genero e";
+	    
+	    TypedQuery<String> query = em.createQuery(jpql, String.class);
+	    
+	    return query.getResultList();
+	}
+	
+    public Integer obterIdPorNomeGenero(String nomeGenero) {
+        // JPQL para selecionar o ID do gênero com base no nome
+        String jpql = "SELECT e.id FROM Genero e WHERE e.nome_genero = :nomeGenero";
+        
+        // Criando a consulta
+        TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+        
+        // Definindo o parâmetro da consulta
+        query.setParameter("nomeGenero", nomeGenero);
+        
+        // Retornando o único resultado da consulta
+        return query.getSingleResult();
+    }
+    
+    public Genero obterGeneroPorNome(String nomeGenero) {
+        String jpql = "SELECT g FROM Genero g WHERE g.nome_genero = :nomeGenero";
+        TypedQuery<Genero> query = em.createQuery(jpql, Genero.class);
+        query.setParameter("nomeGenero", nomeGenero);
+        return query.getSingleResult(); // Vai retornar o objeto Genero correspondente
+    }
+
+
+
 	private void showNotification(String title, String message, NotificationType type) {
 		Notifications notification = Notifications.create().title(title).text(message).hideAfter(Duration.seconds(5))
 				.position(Pos.BOTTOM_RIGHT); // Define a posição da notificação
 
 		switch (type) {
-        case SUCCESS:
-            notification.showInformation();  // Mostra a notificação de sucesso
-            break;
-        case ERROR:
-            notification.showError();  // Mostra a notificação de erro
-            break;
-        case INFORMATION:
-            notification.showInformation();  // Mostra a notificação informativa
-            break;
-        default:
-            notification.show();  // Mostra a notificação padrão
-            break;
-    }
+		case SUCCESS:
+			notification.showInformation(); // Mostra a notificação de sucesso
+			break;
+		case ERROR:
+			notification.showError(); // Mostra a notificação de erro
+			break;
+		case INFORMATION:
+			notification.showInformation(); // Mostra a notificação informativa
+			break;
+		default:
+			notification.show(); // Mostra a notificação padrão
+			break;
+		}
 	}
 
 	public enum NotificationType {
-	    SUCCESS, ERROR, INFORMATION
+		SUCCESS, ERROR, INFORMATION
 	}
 
-	public void updateFilme(Filme filme, String nome, String classificacao, String genero, String sinopse, String autor, Date anoLancamento, Time duracao, Integer horario) {
-	    abrirT();
-	    try {
-	        boolean isModified = false;
-	        boolean isNotVazio = true;
+	public void updateFilme(Filme filme, 
+			String nome, 
+			String classificacao, 
+			Genero genero, 
+			String sinopse, 
+			String autor,
+			Date anoLancamento, 
+			Time duracao) {
+		abrirT();
+		try {
+			boolean isModified = false;
+			boolean isNotVazio = true;
 
-	        if (!nome.isEmpty() && !filme.getNome().equals(nome)) {
-	            filme.setNome(nome);
-	            isModified = true;
-	        } else if (nome.isEmpty()) {
-	            isNotVazio = false;
-	            System.out.println(isNotVazio);
-	        }
+			if (!nome.isEmpty() && !filme.getNome().equals(nome)) {
+				filme.setNome(nome);
+				isModified = true;
+			} else if (nome.isEmpty()) {
+				isNotVazio = false;
+				System.out.println(isNotVazio);
+			}
 
-	        if (!classificacao.isEmpty() && !filme.getClassificacao().equals(classificacao)) {
-	            filme.setClassificacao(classificacao);
-	            isModified = true;
-	        } else if (classificacao.isEmpty()) {
-	            isNotVazio = false;
-	            System.out.println(isNotVazio);
-	        }
+			if (!classificacao.isEmpty() && !filme.getClassificacao().equals(classificacao)) {
+				filme.setClassificacao(classificacao);
+				isModified = true;
+			} else if (classificacao.isEmpty()) {
+				isNotVazio = false;
+				System.out.println(isNotVazio);
+			}
+			
+			System.out.println(filme.getGenero());
+			System.out.println(genero);
+			System.out.println(!filme.getGenero().equals(genero));
+			
+			if (!filme.getGenero().equals(genero)) {
+			    filme.setGenero(genero);
+			    isModified = true;
+			}
 
-	        if (!genero.isEmpty() && !filme.getGenero().equals(genero)) {
-	            filme.setGenero(genero);
-	            isModified = true;
-	        } else if (genero.isEmpty()) {
-	            isNotVazio = false;
-	            System.out.println(isNotVazio);
-	        }
 
-	        if (!sinopse.isEmpty() && !filme.getSinopse().equals(sinopse)) {
-	            filme.setSinopse(sinopse);
-	            isModified = true;
-	        } else if (sinopse.isEmpty()) {
-	            isNotVazio = false;
-	            System.out.println(isNotVazio);
-	        }
+			if (!sinopse.isEmpty() && !filme.getSinopse().equals(sinopse)) {
+				filme.setSinopse(sinopse);
+				isModified = true;
+			} else if (sinopse.isEmpty()) {
+				isNotVazio = false;
+				System.out.println(isNotVazio);
+			}
 
-	        if (!autor.isEmpty() && !filme.getAutor().equals(autor)) {
-	            filme.setAutor(autor);
-	            isModified = true;
-	        } else if (autor.isEmpty()) {
-	            isNotVazio = false;
-	            System.out.println(isNotVazio);
-	        }
-	        
-	        System.out.println("a" + anoLancamento);
-	        	        
-	        if (anoLancamento != null && !filme.getAnoLancamento().equals(anoLancamento)) {
-	            filme.setAnoLancamento(anoLancamento);
-	            isModified = true;
-	        } else if (anoLancamento == null){
-	        	isNotVazio = false;
-	        }
-	        
-	        if (duracao != null && !filme.getDuracao().equals(duracao)) {
-	            filme.setDuracao(duracao);
-	            isModified = true;
-	        } else if (duracao == null){
-	        	isNotVazio = false;
-	        }
-	        
-	        if (horario != null && !filme.getHorario().equals(horario)) {
-	            filme.setHorario(horario);
-	            isModified = true;
-	        } else if (horario == null){
-	        	isNotVazio = false;
-	        }
+			if (!autor.isEmpty() && !filme.getAutor().equals(autor)) {
+				filme.setAutor(autor);
+				isModified = true;
+			} else if (autor.isEmpty()) {
+				isNotVazio = false;
+				System.out.println(isNotVazio);
+			}
 
-	        if (isModified && isNotVazio) {
-	            fecharT();
-	            showNotification("Sucesso", "Filme atualizado com sucesso.", NotificationType.SUCCESS);
-	        } else if (!isNotVazio) {
-	            em.getTransaction().rollback();
-	            showNotification("Erro", "Campos vazios não são permitidos.", NotificationType.ERROR);
-	        } else {
-	            fecharT();
-	            showNotification("Nenhuma alteração", "Nenhuma alteração foi realizada.", NotificationType.INFORMATION);
-	        }
-	    } catch (Exception e) {
-	        em.getTransaction().rollback();
-	        showNotification("Erro", "A atualização do filme falhou devido a um erro inesperado.", NotificationType.ERROR);
-	    }
+			if (anoLancamento != null && !filme.getAnoLancamento().equals(anoLancamento)) {
+				filme.setAnoLancamento(anoLancamento);
+				isModified = true;
+			} else if (anoLancamento == null) {
+				isNotVazio = false;
+			}
+
+			if (duracao != null && !filme.getDuracao().equals(duracao)) {
+				filme.setDuracao(duracao);
+				isModified = true;
+			} else if (duracao == null) {
+				isNotVazio = false;
+			}
+
+			if (isModified && isNotVazio) {
+				fecharT();
+				showNotification("Sucesso", "Filme atualizado com sucesso.", NotificationType.SUCCESS);
+			} else if (!isNotVazio) {
+				em.getTransaction().rollback();
+				showNotification("Erro", "Campos vazios não são permitidos.", NotificationType.ERROR);
+			} else {
+				fecharT();
+				showNotification("Nenhuma alteração", "Nenhuma alteração foi realizada.", NotificationType.INFORMATION);
+			}
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			showNotification("Erro", "A atualização do filme falhou devido a um erro inesperado.",
+					NotificationType.ERROR);
+		}
 	}
 
 }

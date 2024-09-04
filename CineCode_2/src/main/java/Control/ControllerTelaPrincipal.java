@@ -8,6 +8,7 @@ import java.util.List;
 
 import Model.DaoFilme;
 import Model.Filme;
+import Model.Genero;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class ControllerTelaPrincipal {
 
@@ -131,7 +133,7 @@ public class ControllerTelaPrincipal {
 	}
 
 	private void editar(Filme filme) {
-
+		
 		VBox accessedHBox = (VBox) regiaoCentral.getChildren().get(0);
 		accessedHBox.getChildren().clear();
 
@@ -142,7 +144,7 @@ public class ControllerTelaPrincipal {
 
 		HBox forms1 = new HBox();
 		Label nome_filme = new Label("Nome do filme: ");
-		TextField inputNomeFilme = new TextField(filme.getNome());
+		TextField inputNomeFilme = new TextField(filme.getNome()); // Nome
 		forms1.getChildren().addAll(nome_filme, inputNomeFilme);
 		forms1.getStyleClass().add("forms");
 		nome_filme.getStyleClass().add("LabelEditar");
@@ -159,16 +161,20 @@ public class ControllerTelaPrincipal {
 		HBox forms3 = new HBox();
 		Label genero = new Label("Gênero ");
 		ChoiceBox<String> inputGenero = new ChoiceBox<>();
-		inputGenero.setValue(filme.getGenero());
+		inputGenero.setValue(filme.getGenero().getNome_genero());
 		inputGeneroOpcoes(inputGenero);
 		forms3.getChildren().addAll(genero, inputGenero);
 		forms3.getStyleClass().add("forms");
 		genero.getStyleClass().add("LabelEditar");
 		inputGenero.getStyleClass().add("inputLabel");
+				
+		String nomeGeneroSelecionado = inputGenero.getValue();
+
+		Genero generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado);
 
 		HBox forms4 = new HBox();
 		Label sinopse = new Label("Sinopse: ");
-		TextArea inputSinopse = new TextArea(filme.getSinopse()); // Add sinopse
+		TextArea inputSinopse = new TextArea(filme.getSinopse()); // sinopse
 		forms4.getChildren().addAll(sinopse, inputSinopse);
 		forms4.getStyleClass().add("forms");
 		sinopse.getStyleClass().add("LabelEditar");
@@ -176,55 +182,46 @@ public class ControllerTelaPrincipal {
 
 		HBox forms5 = new HBox();
 		Label autor = new Label("Autor: ");
-		TextField inputAutor = new TextField(filme.getAutor());
+		TextField inputAutor = new TextField(filme.getAutor()); // Autor
 		forms5.getChildren().addAll(autor, inputAutor);
 		forms5.getStyleClass().add("forms");
 		autor.getStyleClass().add("LabelEditar");
 		inputAutor.getStyleClass().add("inputLabel");
 
 		HBox forms6 = new HBox();
-		Label horario = new Label("Horário: ");
-		TextField inputHorario = new TextField(filme.getHorario().toString());
-		forms6.getChildren().addAll(horario, inputHorario);
-		forms6.getStyleClass().add("forms");
-		horario.getStyleClass().add("LabelEditar");
-		inputHorario.getStyleClass().add("inputLabel");
-
-		HBox forms7 = new HBox();
 		Label duracao = new Label("Duração: ");
-		TextField inputDuracao = new TextField(filme.getDuracao().toString());
-		forms7.getChildren().addAll(duracao, inputDuracao);
-		forms7.getStyleClass().add("forms");
+		TextField inputDuracao = new TextField(filme.getDuracao().toString()); // Duração
+		forms6.getChildren().addAll(duracao, inputDuracao);
+		forms6.getStyleClass().add("forms");
 		duracao.getStyleClass().add("LabelEditar");
 		inputDuracao.getStyleClass().add("inputLabel");
 
-		HBox forms8 = new HBox();
+		HBox forms7 = new HBox();
 		Label anoLancamento = new Label("Ano de Lançamento: ");
 		TextField inputAnoLancamento = new TextField(filme.getAnoLancamento().toString());
-		forms8.getChildren().addAll(anoLancamento, inputAnoLancamento);
-		forms8.getStyleClass().add("forms");
+		forms7.getChildren().addAll(anoLancamento, inputAnoLancamento);
+		forms7.getStyleClass().add("forms"); // Ano de Lançamento
 		anoLancamento.getStyleClass().add("LabelEditar");
 		inputAnoLancamento.getStyleClass().add("inputLabel");
 
-		HBox forms9 = new HBox();
+		HBox fomrs8 = new HBox();
 		Button salvar = new Button("Salvar");
 		salvar.setOnAction(e -> {
-			daoFilme.updateFilme(filme, inputNomeFilme.getText(), inputClassificacao.getText(), inputGenero.getValue(),
-					inputSinopse.getText(), inputAutor.getText(),
-					(Date) convertString(inputAnoLancamento.getText(), Date.class),
-					(Time) convertString(inputDuracao.getText(), Time.class),
-					(Integer) convertString(inputHorario.getText(), Integer.class)); // TODO
+			daoFilme.updateFilme(filme, inputNomeFilme.getText(), inputClassificacao.getText(), generoSelecionado,
+				    inputSinopse.getText(), inputAutor.getText(),
+				    (Date) convertString(inputAnoLancamento.getText(), Date.class),
+				    (Time) convertString(inputDuracao.getText(), Time.class));
 			mostrarFilmes();
 		});
 		Button cancelar = new Button("Cancelar");
 		cancelar.setOnAction(e -> {
 			mostrarFilmes();
 		});
-		forms9.getStyleClass().add("forms");
-		forms9.getChildren().addAll(salvar, cancelar);
-		forms9.getStyleClass().add("forms5");
+		fomrs8.getStyleClass().add("forms");
+		fomrs8.getChildren().addAll(salvar, cancelar);
+		fomrs8.getStyleClass().add("forms5");
 
-		vboxEditarFather.getChildren().addAll(forms1, forms2, forms3, forms4, forms5, forms6, forms7, forms8, forms9);
+		vboxEditarFather.getChildren().addAll(forms1, forms2, forms3, forms4, forms5, forms6, forms7, fomrs8);
 		// Adicionar os novos HBox ao vboxEditarFather
 
 	}
@@ -242,31 +239,24 @@ public class ControllerTelaPrincipal {
 				return new java.sql.Date(utilDate.getTime());
 
 			} else if (targetType == Time.class) {
-				return Time.valueOf(input); 
-
-			} else if (targetType == Integer.class) {
-				return Integer.parseInt(input); 
+				return Time.valueOf(input);
 
 			} else {
 				throw new IllegalArgumentException("Tipo de conversão não suportado: " + targetType.getName());
 			}
 		} catch (ParseException e) {
-	        return null;		
-	    } catch (IllegalArgumentException e) {
-	        return null;		
+			return null;
+		} catch (IllegalArgumentException e) {
+			return null;
 		}
 	}
-	
-	
 
-	public void inputGeneroOpcoes(ChoiceBox<String> ChoiceBox) {
-
-		List<String> listaGeneros = daoFilme.obterGeneros();
-		ObservableList<String> observableGeneros = FXCollections.observableArrayList(listaGeneros);
-
-		ChoiceBox.setItems(observableGeneros);
+	public void inputGeneroOpcoes(ChoiceBox<String> choiceBox) {
+	    List<String> listaGeneros = daoFilme.obterNomesGeneros();
+	    ObservableList<String> observableGeneros = FXCollections.observableArrayList(listaGeneros);
+	    choiceBox.setItems(observableGeneros);
 	}
-
+	
 	private void confirmaDelete(Stage owner, Filme filme) {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.initOwner(owner); // Associa o alerta à janela principal
