@@ -130,21 +130,7 @@ public class DaoFilme<E> {
 	    
 	    return query.getResultList();
 	}
-	
-    public Integer obterIdPorNomeGenero(String nomeGenero) {
-        // JPQL para selecionar o ID do gênero com base no nome
-        String jpql = "SELECT e.id FROM Genero e WHERE e.nome_genero = :nomeGenero";
-        
-        // Criando a consulta
-        TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
-        
-        // Definindo o parâmetro da consulta
-        query.setParameter("nomeGenero", nomeGenero);
-        
-        // Retornando o único resultado da consulta
-        return query.getSingleResult();
-    }
-    
+	    
     public Genero obterGeneroPorNome(String nomeGenero) {
         String jpql = "SELECT g FROM Genero g WHERE g.nome_genero = :nomeGenero";
         TypedQuery<Genero> query = em.createQuery(jpql, Genero.class);

@@ -25,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 public class ControllerTelaPrincipal {
 
@@ -41,6 +40,8 @@ public class ControllerTelaPrincipal {
 
 	@FXML
 	private Button filmesEmBreve;
+	
+	private Genero generoSelecionado;
 
 	@FXML
 	private void initialize() {
@@ -161,16 +162,19 @@ public class ControllerTelaPrincipal {
 		HBox forms3 = new HBox();
 		Label genero = new Label("Gênero ");
 		ChoiceBox<String> inputGenero = new ChoiceBox<>();
-		inputGenero.setValue(filme.getGenero().getNome_genero());
 		inputGeneroOpcoes(inputGenero);
+		inputGenero.setValue(filme.getGenero().getNome_genero());
 		forms3.getChildren().addAll(genero, inputGenero);
 		forms3.getStyleClass().add("forms");
 		genero.getStyleClass().add("LabelEditar");
 		inputGenero.getStyleClass().add("inputLabel");
 				
-		String nomeGeneroSelecionado = inputGenero.getValue();
+		inputGenero.getSelectionModel().selectedItemProperty().addListener((obs, oldGenero, newGenero) -> {
+		    // Armazena o valor selecionado em uma variável temporária
+			String nomeGeneroSelecionado = inputGenero.getValue();
+		    generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado);			
+		});
 
-		Genero generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado);
 
 		HBox forms4 = new HBox();
 		Label sinopse = new Label("Sinopse: ");
@@ -207,7 +211,8 @@ public class ControllerTelaPrincipal {
 		HBox fomrs8 = new HBox();
 		Button salvar = new Button("Salvar");
 		salvar.setOnAction(e -> {
-			daoFilme.updateFilme(filme, inputNomeFilme.getText(), inputClassificacao.getText(), generoSelecionado,
+			daoFilme.updateFilme(filme, inputNomeFilme.getText(), inputClassificacao.getText(),
+					generoSelecionado,
 				    inputSinopse.getText(), inputAutor.getText(),
 				    (Date) convertString(inputAnoLancamento.getText(), Date.class),
 				    (Time) convertString(inputDuracao.getText(), Time.class));
@@ -251,6 +256,7 @@ public class ControllerTelaPrincipal {
 		}
 	}
 
+	
 	public void inputGeneroOpcoes(ChoiceBox<String> choiceBox) {
 	    List<String> listaGeneros = daoFilme.obterNomesGeneros();
 	    ObservableList<String> observableGeneros = FXCollections.observableArrayList(listaGeneros);
