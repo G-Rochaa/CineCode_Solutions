@@ -66,6 +66,14 @@
 	-fx-alignment: CENTER;
 }
 
+
+.VboxCadastroFilme{
+	-fx-padding: 10.0;
+    -fx-border-color: blue; 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+}
+
 /*REGIÃO CENTRAL INICIO: */
 
 
@@ -82,7 +90,6 @@
     -fx-pref-height: 200px;
     -fx-alignment: center-left;
     -fx-background-color: black;
-       
 }
 
 .HBoxTituloLabel{ /*Label do titulo filmes em cartaz */
@@ -136,6 +143,14 @@
     -fx-border-style: solid;
     -fx-padding: 5;
 }
+
+.forms_Status_Filme{
+	-fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-padding: 5;
+    -fx-spacing: 10;
+}
+
 
 .inputLabel{
     -fx-pref-width: 400.0; 

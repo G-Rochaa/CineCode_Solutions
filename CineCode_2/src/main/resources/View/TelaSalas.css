@@ -1,0 +1,16 @@
+.vbox-center-mae{
+
+}
+
+.HboxChildSalas{
+	-fx-alignment: center; 	
+	-fx-border-style: solid;
+	-fx-border-color: pink;
+	
+}
+
+.LabelSalas{
+	-fx-font-size: 18.0px; 
+    -fx-font-weight: bold; 
+    -fx-border-color: red;
+}
