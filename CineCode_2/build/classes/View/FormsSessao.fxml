@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="Control.ControllerFormsSessao">
+	<center>
+		<VBox styleClass="vbox-center-mae-sessao">
+			<!-- Horário de Início -->
+			<HBox styleClass="HboxlabelSessao">
+				<Label text="Horário de Início:" styleClass="labelSessao" />
+				<TextField fx:id="inputHorarioInicio" styleClass="inputSessao"/>
+			</HBox>
+
+			<!-- Horário que Finaliza -->
+			<HBox styleClass="HboxlabelSessao">
+				<Label text="Horário Fim:" styleClass="labelSessao" />
+				<TextField fx:id="inputHorarioFim" styleClass="inputSessao" />
+			</HBox>
+			
+			<!-- Data do filme -->
+			<HBox styleClass="HboxlabelSessaoData">
+				<Label text="Data da sessão: " styleClass="labelSessao" />
+				<DatePicker fx:id="inputDataFilme" styleClass="inputSessao" />
+			</HBox>
+			
+			<HBox styleClass="HboxlabelSessao">
+				<Button fx:id="salvarSessao" text="Salvar" onAction="#enviaDados"/>
+				<Button fx:id="cancelarSessao" text="Cancelar" />			
+			</HBox>
+		</VBox>
+	</center>
+</BorderPane>

@@ -1,13 +1,16 @@
 package Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import java.sql.Date; // Para o tipo DATE
 import java.sql.Time; // Para o tipo TIME
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_filmes")
@@ -24,8 +27,9 @@ public class Filme {
     @Column(name = "ano_lancamento")
     private Date anoLancamento; // Tipo DATE
 
-    @Column(name = "genero")
-    private String genero; // Tipo VARCHAR(45)
+    @ManyToOne
+    @JoinColumn(name = "Id_genero")
+    private Genero genero; 
 
     @Column(name = "autor")
     private String autor; // Tipo VARCHAR(45)
@@ -34,10 +38,7 @@ public class Filme {
     private Time duracao; // Tipo TIME
 
     @Column(name = "status_filme")
-    private Boolean statusFilme; // Tipo BIT(1). Usando Boolean para mapear BIT(1)
-
-    @Column(name = "horario")
-    private Integer horario; // Tipo INT
+    private int statusFilme; 
     
     @Column(name = "classificacao")
     private String classificacao;
@@ -45,20 +46,31 @@ public class Filme {
     @Column(name = "sinopse")
     private String sinopse;
     
+    @Column(name = "imagem")
+    private String img;
+
+    
     public Filme() {
     }
     
-    public Filme(String nome, Date anoLancamento, String genero, String autor, Time duracao, Boolean statusFilme, Integer horario) {
-    	this.nome = nome;
-    	this.anoLancamento = anoLancamento;
-    	this.genero = genero;
-    	this.autor = autor;
-    	this.duracao = duracao;
-    	this.statusFilme = statusFilme;
-    	this.horario = horario;
-    }
+    
 
-    public String getClassificacao() {
+    public Filme(String nome, Date anoLancamento, Genero genero, String autor, Time duracao, int statusFilme,
+			String classificacao, String sinopse, String img) {
+		this.nome = nome;
+		this.anoLancamento = anoLancamento;
+		this.genero = genero;
+		this.autor = autor;
+		this.duracao = duracao;
+		this.statusFilme = statusFilme;
+		this.classificacao = classificacao;
+		this.sinopse = sinopse;
+		this.img = img;
+	}
+
+
+
+	public String getClassificacao() {
 		return classificacao;
 	}
 
@@ -99,11 +111,11 @@ public class Filme {
         this.anoLancamento = anoLancamento;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 
@@ -123,19 +135,11 @@ public class Filme {
         this.duracao = duracao;
     }
 
-    public Boolean getStatusFilme() {
+    public int getStatusFilme() {
         return statusFilme;
     }
 
-    public void setStatusFilme(Boolean statusFilme) {
+    public void setStatusFilme(int statusFilme) {
         this.statusFilme = statusFilme;
-    }
-
-    public Integer getHorario() {
-        return horario;
-    }
-
-    public void setHorario(Integer horario) {
-        this.horario = horario;
     }
 }

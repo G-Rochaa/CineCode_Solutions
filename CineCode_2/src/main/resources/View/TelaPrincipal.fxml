@@ -45,6 +45,8 @@
 					<VBox styleClass="vbox-center-filho">
 						<Button fx:id="filmesCartaz" text="Filmes em cartaz"/>
 						<Button fx:id="filmesEmBreve" text="Filmes em breve" />
+						<Button fx:id="InserirFilme" text="Cadastro de filme" />
+						<Button fx:id="Sessao" text="Cadastro de sessao" />
 					</VBox>
 
 				</VBox>
