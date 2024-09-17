@@ -1,0 +1,39 @@
+INSERT INTO cinecode.Tb_Salas (Nr_Sala, Qnt_Assentos) VALUES
+(1, 15),
+(2, 14),
+(3, 12),
+(4, 15),
+(5, 10),
+(6, 13),
+(7, 11),
+(8, 15),
+(9, 9),
+(10, 8);
+
+INSERT INTO cinecode.Tb_tipo_ingresso (idTipo_Ingresso, Tipo_Ingresso) VALUES
+(1, 'Inteira'),
+(2, 'Meia');
+
+INSERT INTO cinecode.Tb_filmes (id_filme, titulo, ano_lancamento, diretor, duracao, status_filme, sinopse, classificacao, imagem, Id_genero) VALUES
+(1, 'Inception', '2010-07-16', 'Christopher Nolan', '02:28:00', 1, 'Um ladrão que rouba segredos corporativos através do uso de tecnologia de compartilhamento de sonhos.', 14, 'inception.jpg', 6),
+(2, 'Titanic', '1997-12-19', 'James Cameron', '03:14:00', 2, 'Uma história de amor e tragédia a bordo do Titanic.', 12, 'titanic.jpg', 5),
+(3, 'The Dark Knight', '2008-07-18', 'Christopher Nolan', '02:32:00', 1, 'Batman enfrenta o Coringa em uma batalha por Gotham City.', 14, 'dark_knight.jpg', 1),
+(4, 'Toy Story', '1995-11-22', 'John Lasseter', '01:21:00', 2, 'Brinquedos que ganham vida quando seus donos não estão por perto.', 0, 'toy_story.jpg', 8),
+(5, 'The Matrix', '1999-03-31', 'Lana Wachowski', '02:16:00', 1, 'Um hacker descobre uma realidade simulada e luta contra seus criadores.', 14, 'matrix.jpg', 6),
+(6, 'Forrest Gump', '1994-07-06', 'Robert Zemeckis', '02:22:00', 2, 'A história de um homem simples que vive eventos extraordinários.', 12, 'forrest_gump.jpg', 3),
+(7, 'The Shining', '1980-05-23', 'Stanley Kubrick', '02:26:00', 1, 'Um homem enlouquece em um hotel isolado durante o inverno.', 18, 'shining.jpg', 4),
+(8, 'Avengers: Endgame', '2019-04-26', 'Anthony Russo', '03:02:00', 1, 'Os Vingadores enfrentam Thanos para restaurar o universo.', 12, 'endgame.jpg', 1),
+(9, 'La La Land', '2016-12-09', 'Damien Chazelle', '02:08:00', 3, 'Um músico e uma atriz buscam sucesso em Los Angeles.', 12, 'la_la_land.jpg', 5),
+(10, 'Spider-Man: Into the Spider-Verse', '2018-12-14', 'Peter Ramsey', '01:57:00', 1, 'Um jovem assume o manto do Homem-Aranha em um multiverso.', 10, 'spider_verse.jpg', 8);
+
+INSERT INTO cinecode.Tb_Genero (id_genero, nome_genero) VALUES
+(1, 'Ação'),
+(2, 'Comédia'),
+(3, 'Drama'),
+(4, 'Terror'),
+(5, 'Romance'),
+(6, 'Ficção Científica'),
+(7, 'Aventura'),
+(8, 'Animação'),
+(9, 'Documentário'),
+(10, 'Fantasia');
