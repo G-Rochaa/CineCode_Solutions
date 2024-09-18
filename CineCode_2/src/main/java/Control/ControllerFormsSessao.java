@@ -62,6 +62,7 @@ public class ControllerFormsSessao {
 		}
 
         Sessao sessao = new Sessao();
+        
         sessao.setSala(salaEscolhida);
         sessao.setFilme(filmeEscolhido);
         sessao.setHorarioIni(horarioInicio);
@@ -74,11 +75,11 @@ public class ControllerFormsSessao {
         sessaoDao.capturaHorarioFim(horarioFim);
         sessaoDao.capturaDataSessao(dataSessao);
         
-        Boolean result = sessaoDao.insertSessao();
+        Boolean result = sessaoDao.insertSessao(sessao);
+        //Chamada do método Insert Sessão
         
         if (result) {
         	limpaCampos();
-        	sessao = new Sessao();
 		}
         return true;
     }

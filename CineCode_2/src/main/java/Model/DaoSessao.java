@@ -176,24 +176,31 @@ public class DaoSessao<E> {
 		this.sessao.setData(dataMarcada);
 		return this.dataSessao = dataMarcada;
 	}
+	
+//	public Integer maxSessao() {
+//		String jpql = "select max(e.id) from Sessao e";
+//		
+//		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+//		
+//		return query.getSingleResult();
+//	}
 
-	public Boolean insertSessao() {
-		if (validaHorario()) {
-			try {
-				abrirT();
-				em.persist(sessao);
-				fecharT();
-				
-				NotificationManager.showNotification("Sucesso!", "Sessão inserida com sucesso!",
-						NotificationType.SUCCESS);
-				return true;
-			} catch (Exception e) {
-				NotificationManager.showNotification("Erro!", "Ocorreu um erro inesperado!", NotificationType.ERROR);
-				return false;
-			}
-		}
+	public Boolean insertSessao(Sessao sessao) {
+	    if (validaHorario()) {
+	        try {
+	            abrirT();
+	            em.persist(sessao);
+	            fecharT();
+	            NotificationManager.showNotification("Sucesso!", "Sessão inserida com sucesso!",
+	                    NotificationType.SUCCESS);
+	            return true;
+	        } catch (Exception e) {
+	            NotificationManager.showNotification("Erro!", "Ocorreu um erro inesperado!", NotificationType.ERROR);
+	            return false;
+	        }
+	    }
 
-		return false;
+	    return false;
 	}
 
 	public Boolean validaHorario() {
