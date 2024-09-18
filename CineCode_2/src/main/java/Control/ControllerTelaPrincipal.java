@@ -1,26 +1,39 @@
 package Control;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 import Model.DaoFilme;
+import Model.DaoSala;
 import Model.Filme;
+import Model.Genero;
+import Model.Salas;
+import View.NotificationManager;
+import View.NotificationManager.NotificationType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,20 +54,168 @@ public class ControllerTelaPrincipal {
 	private Button filmesEmBreve;
 
 	@FXML
+	private Button InserirFilme;
+
+	@FXML
+	private Button Sessao;
+
+	private String titulo = "Filmes em Cartaz";
+
+	private String titulo2 = "Filmes em Breve";
+
+	private Genero generoSelecionado = null;
+
+	private LocalDate anoLancamento;
+
+	// MÉTODOS PRINCIPAIS
+
+	@FXML
 	private void initialize() {
 		filmesCartaz.setOnAction(e -> {
 			tipoFilme(e);
-			mostrarFilmes();
+			mostrarFilmes(titulo);
 		});
 
 		filmesEmBreve.setOnAction(e -> {
 			tipoFilme(e);
-			mostrarFilmes();
+			mostrarFilmes(titulo2);
+		});
+
+		InserirFilme.setOnAction(e -> {
+			cadastroFilme();
+		});
+
+		Sessao.setOnAction(e -> {
+			mostrarSalas();
 		});
 	}
 
 	@FXML
-	private void mostrarFilmes() {
+	private void cadastroFilme() {
+		VBox accessedHBox = (VBox) regiaoCentral.getChildren().get(0);
+		accessedHBox.getChildren().clear();
+
+		VBox vboxEditarFather = new VBox();
+		vboxEditarFather.getStyleClass().add("vboxEditarFather");
+
+		accessedHBox.getChildren().add(vboxEditarFather);
+
+		HBox forms1 = new HBox();
+		forms1.getStyleClass().add("forms");
+		Label nome_filme = new Label("Nome do filme: ");
+		TextField inputNomeFilme = new TextField(); // Nome
+		forms1.getChildren().addAll(nome_filme, inputNomeFilme);
+		nome_filme.getStyleClass().add("LabelEditar");
+		inputNomeFilme.getStyleClass().add("inputLabel");
+
+		HBox forms2 = new HBox();
+		forms2.getStyleClass().add("forms");
+		Label classificacao = new Label("Classificacao: "); // Classificação
+		TextField inputClassificacao = new TextField();
+		forms2.getChildren().addAll(classificacao, inputClassificacao);
+		classificacao.getStyleClass().add("LabelEditar");
+		inputClassificacao.getStyleClass().add("inputLabel");
+		formataInputClassificao(inputClassificacao);
+
+		HBox forms3 = new HBox();
+		forms3.getStyleClass().add("forms");
+		Label genero = new Label("Gênero "); // Genero
+		ChoiceBox<String> inputGenero = new ChoiceBox<>();
+		inputGeneroOpcoes(inputGenero);
+		forms3.getChildren().addAll(genero, inputGenero);
+		genero.getStyleClass().add("LabelEditar");
+		inputGenero.getStyleClass().add("inputLabel");
+
+		inputGenero.getSelectionModel().selectedItemProperty().addListener((obs, oldGenero, newGenero) -> {
+			String nomeGeneroSelecionado2 = inputGenero.getValue();
+			generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado2);
+		});
+
+		HBox forms4 = new HBox();
+		forms4.getStyleClass().add("forms");
+		Label sinopse = new Label("Sinopse: ");
+		TextArea inputSinopse = new TextArea(); // sinopse
+		forms4.getChildren().addAll(sinopse, inputSinopse);
+		sinopse.getStyleClass().add("LabelEditar");
+		inputSinopse.getStyleClass().add("inputLabel");
+
+		HBox forms5 = new HBox();
+		forms5.getStyleClass().add("forms");
+		Label autor = new Label("Autor: ");
+		TextField inputAutor = new TextField(); // Autor
+		forms5.getChildren().addAll(autor, inputAutor);
+		autor.getStyleClass().add("LabelEditar");
+		inputAutor.getStyleClass().add("inputLabel");
+
+		HBox forms6 = new HBox();
+		forms6.getStyleClass().add("forms");
+		Label duracao = new Label("Duração: ");
+		TextField inputDuracao = new TextField(); // Duração
+		forms6.getChildren().addAll(duracao, inputDuracao);
+		duracao.getStyleClass().add("LabelEditar");
+		inputDuracao.getStyleClass().add("inputLabel");
+
+		HBox forms7 = new HBox();
+		forms7.getStyleClass().add("forms"); // Ano de Lançamento
+		Label labelAnoLançamento = new Label("Ano Laçamento: ");
+		labelAnoLançamento.getStyleClass().add("LabelEditar");
+		DatePicker inputAnoLançamento = new DatePicker();
+
+		inputAnoLançamento.setOnAction(e -> {
+			anoLancamento = inputAnoLançamento.getValue();
+
+		});
+
+		forms7.getChildren().addAll(labelAnoLançamento, inputAnoLançamento);
+		inputAnoLançamento.getStyleClass().add("LabelEditar");
+
+		HBox forms8 = new HBox();
+		forms8.getStyleClass().add("forms_Status_Filme");
+		Label statusFilme = new Label("Status Filme: "); // Status_Filme
+		statusFilme.getStyleClass().add("LabelEditar");
+		ToggleGroup group = new ToggleGroup();
+		RadioButton radio1 = new RadioButton("Em Breve");
+		RadioButton radio2 = new RadioButton("Em Cartaz");
+		radio1.setToggleGroup(group);
+		radio2.setToggleGroup(group);
+		forms8.getChildren().addAll(statusFilme, radio1, radio2);
+
+		HBox forms9 = new HBox();
+		forms9.getStyleClass().add("forms");
+		Label img = new Label("Link da Imagem: "); // Img
+		TextField inputImg = new TextField();
+		forms9.getChildren().addAll(img, inputImg);
+		img.getStyleClass().add("LabelEditar");
+		inputImg.getStyleClass().add("inputLabel");
+
+		HBox forms11 = new HBox();
+		Button salvar = new Button("Salvar");
+		salvar.setOnAction(e -> {
+
+			if (daoFilme.cadastrarFilme(inputNomeFilme.getText(), convertLocalDateToSqlDate(anoLancamento),
+					generoSelecionado, inputAutor.getText(), (Time) convertString(inputDuracao.getText(), Time.class),
+					getStatusFilmeSelecionado(group, radio1, radio2), inputClassificacao.getText(),
+					inputSinopse.getText(), inputImg.getText())) {
+				cadastroFilme();
+			}
+
+		});
+
+		Button cancelar = new Button("Cancelar");
+		cancelar.setOnAction(e -> {
+			cadastroFilme();
+		});
+		forms11.getStyleClass().add("forms");
+		forms11.getChildren().addAll(salvar, cancelar);
+		forms11.getStyleClass().add("forms5");
+
+		vboxEditarFather.getChildren().addAll(forms1, forms2, forms3, forms4, forms5, forms6, forms7, forms8, forms9,
+				forms11);
+
+	}
+
+	@FXML
+	private void mostrarFilmes(String titulo) {
 
 		regiaoCentral.getChildren().clear();
 
@@ -65,7 +226,7 @@ public class ControllerTelaPrincipal {
 		HBoxTituloConteiner.getStyleClass().add("HBoxTituloConteiner");
 		HBoxTituloConteiner.setMaxHeight(100);
 
-		Label HBoxTituloLabel = new Label("Filmes em Cartaz");
+		Label HBoxTituloLabel = new Label(titulo);
 		HBoxTituloLabel.getStyleClass().add("HBoxTituloLabel");
 
 		HBoxTituloConteiner.getChildren().add(HBoxTituloLabel);
@@ -120,16 +281,6 @@ public class ControllerTelaPrincipal {
 		regiaoCentral.getChildren().add(VboxFilmesCartaz); // Adiciona VboxFilmesCartaz a regiaoCentral
 	}
 
-	private void tipoFilme(ActionEvent event) {
-		Button sourceButton = (Button) event.getSource();
-
-		if (sourceButton == filmesCartaz) {
-			filmes = daoFilme.obterTodosEmCartaz();
-		} else if (sourceButton == filmesEmBreve) {
-			filmes = daoFilme.obterTodosEmBreve();
-		}
-	}
-
 	private void editar(Filme filme) {
 
 		VBox accessedHBox = (VBox) regiaoCentral.getChildren().get(0);
@@ -142,7 +293,7 @@ public class ControllerTelaPrincipal {
 
 		HBox forms1 = new HBox();
 		Label nome_filme = new Label("Nome do filme: ");
-		TextField inputNomeFilme = new TextField(filme.getNome());
+		TextField inputNomeFilme = new TextField(filme.getNome()); // Nome
 		forms1.getChildren().addAll(nome_filme, inputNomeFilme);
 		forms1.getStyleClass().add("forms");
 		nome_filme.getStyleClass().add("LabelEditar");
@@ -159,16 +310,25 @@ public class ControllerTelaPrincipal {
 		HBox forms3 = new HBox();
 		Label genero = new Label("Gênero ");
 		ChoiceBox<String> inputGenero = new ChoiceBox<>();
-		inputGenero.setValue(filme.getGenero());
 		inputGeneroOpcoes(inputGenero);
+		inputGenero.setValue(filme.getGenero().getNome_genero());
 		forms3.getChildren().addAll(genero, inputGenero);
 		forms3.getStyleClass().add("forms");
 		genero.getStyleClass().add("LabelEditar");
 		inputGenero.getStyleClass().add("inputLabel");
 
+		String nomeGeneroSelecionado = inputGenero.getValue();
+
+		generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado);
+
+		inputGenero.getSelectionModel().selectedItemProperty().addListener((obs, oldGenero, newGenero) -> {
+			String nomeGeneroSelecionado2 = inputGenero.getValue();
+			generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado2);
+		});
+
 		HBox forms4 = new HBox();
 		Label sinopse = new Label("Sinopse: ");
-		TextArea inputSinopse = new TextArea(filme.getSinopse()); // Add sinopse
+		TextArea inputSinopse = new TextArea(filme.getSinopse()); // sinopse
 		forms4.getChildren().addAll(sinopse, inputSinopse);
 		forms4.getStyleClass().add("forms");
 		sinopse.getStyleClass().add("LabelEditar");
@@ -176,57 +336,120 @@ public class ControllerTelaPrincipal {
 
 		HBox forms5 = new HBox();
 		Label autor = new Label("Autor: ");
-		TextField inputAutor = new TextField(filme.getAutor());
+		TextField inputAutor = new TextField(filme.getAutor()); // Autor
 		forms5.getChildren().addAll(autor, inputAutor);
 		forms5.getStyleClass().add("forms");
 		autor.getStyleClass().add("LabelEditar");
 		inputAutor.getStyleClass().add("inputLabel");
 
 		HBox forms6 = new HBox();
-		Label horario = new Label("Horário: ");
-		TextField inputHorario = new TextField(filme.getHorario().toString());
-		forms6.getChildren().addAll(horario, inputHorario);
-		forms6.getStyleClass().add("forms");
-		horario.getStyleClass().add("LabelEditar");
-		inputHorario.getStyleClass().add("inputLabel");
-
-		HBox forms7 = new HBox();
 		Label duracao = new Label("Duração: ");
-		TextField inputDuracao = new TextField(filme.getDuracao().toString());
-		forms7.getChildren().addAll(duracao, inputDuracao);
-		forms7.getStyleClass().add("forms");
+		TextField inputDuracao = new TextField(filme.getDuracao().toString()); // Duração
+		forms6.getChildren().addAll(duracao, inputDuracao);
+		forms6.getStyleClass().add("forms");
 		duracao.getStyleClass().add("LabelEditar");
 		inputDuracao.getStyleClass().add("inputLabel");
 
-		HBox forms8 = new HBox();
+		HBox forms7 = new HBox();
 		Label anoLancamento = new Label("Ano de Lançamento: ");
 		TextField inputAnoLancamento = new TextField(filme.getAnoLancamento().toString());
-		forms8.getChildren().addAll(anoLancamento, inputAnoLancamento);
-		forms8.getStyleClass().add("forms");
+		forms7.getChildren().addAll(anoLancamento, inputAnoLancamento);
+		forms7.getStyleClass().add("forms"); // Ano de Lançamento
 		anoLancamento.getStyleClass().add("LabelEditar");
 		inputAnoLancamento.getStyleClass().add("inputLabel");
 
-		HBox forms9 = new HBox();
+		formataInputClassificao(inputClassificacao);
+
+		HBox fomrs8 = new HBox();
 		Button salvar = new Button("Salvar");
 		salvar.setOnAction(e -> {
-			daoFilme.updateFilme(filme, inputNomeFilme.getText(), inputClassificacao.getText(), inputGenero.getValue(),
+			daoFilme.updateFilme(filme, inputNomeFilme.getText(), inputClassificacao.getText(), generoSelecionado,
 					inputSinopse.getText(), inputAutor.getText(),
 					(Date) convertString(inputAnoLancamento.getText(), Date.class),
-					(Time) convertString(inputDuracao.getText(), Time.class),
-					(Integer) convertString(inputHorario.getText(), Integer.class)); // TODO
-			mostrarFilmes();
+					(Time) convertString(inputDuracao.getText(), Time.class));
+			mostrarFilmes(titulo);
 		});
 		Button cancelar = new Button("Cancelar");
 		cancelar.setOnAction(e -> {
-			mostrarFilmes();
+			mostrarFilmes(titulo);
 		});
-		forms9.getStyleClass().add("forms");
-		forms9.getChildren().addAll(salvar, cancelar);
-		forms9.getStyleClass().add("forms5");
+		fomrs8.getStyleClass().add("forms");
+		fomrs8.getChildren().addAll(salvar, cancelar);
+		fomrs8.getStyleClass().add("forms5");
 
-		vboxEditarFather.getChildren().addAll(forms1, forms2, forms3, forms4, forms5, forms6, forms7, forms8, forms9);
+		vboxEditarFather.getChildren().addAll(forms1, forms2, forms3, forms4, forms5, forms6, forms7, fomrs8);
 		// Adicionar os novos HBox ao vboxEditarFather
 
+	}
+	
+	private void mostrarSalas() {
+	    try {
+	        // Carregar o novo FXML
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TelaSalas.fxml"));
+	        Parent subPage = loader.load();
+	        
+	        String css = this.getClass().getResource("/View/TelaSalas.css").toExternalForm();
+	        subPage.getStylesheets().add(css);
+	        
+	        // Obter o controlador, se necessário		        
+	        regiaoCentral.getChildren().clear(); 
+	        regiaoCentral.getChildren().add(subPage); 
+
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+}
+
+	// MÉTODOS SECUNDÁRIOS
+
+	private void tipoFilme(ActionEvent event) {
+		Button sourceButton = (Button) event.getSource();
+
+		if (sourceButton == filmesCartaz) {
+			filmes = daoFilme.obterTodosEmCartaz();
+		} else if (sourceButton == filmesEmBreve) {
+			filmes = daoFilme.obterTodosEmBreve();
+		}
+	}
+
+	private void confirmaDelete(Stage owner, Filme filme) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.initOwner(owner); // Associa o alerta à janela principal
+		alert.setTitle("Confirmar Exclusão");
+		alert.setHeaderText("ATENÇÃO! Esse filme será desativado confirma a operação?");
+
+		ButtonType buttonYes = new ButtonType("Sim");
+		ButtonType buttonNo = new ButtonType("Não");
+
+		alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+		alert.showAndWait().ifPresent(response -> {
+			int status_filme = filme.getStatusFilme();
+
+			if (response == buttonYes) {
+				daoFilme.removerFilme(filme);
+				atualizarListaEInterface(status_filme);
+			}
+		});
+	}
+
+	private void atualizarListaEInterface(int status) {
+
+		if (status == 1) {
+			tipoFilme(new ActionEvent(filmesCartaz, null)); // Atualiza a lista de filmes em cartaz
+		} else {
+			tipoFilme(new ActionEvent(filmesEmBreve, null)); // Atualiza a lista de filmes em breve
+		}
+		mostrarFilmes(titulo);
+	}
+
+
+	// MÉTODOS DE TRATAMENTO DOS INPUTS
+
+	public void inputGeneroOpcoes(ChoiceBox<String> choiceBox) {
+		List<String> listaGeneros = daoFilme.obterNomesGeneros();
+		ObservableList<String> observableGeneros = FXCollections.observableArrayList(listaGeneros);
+		choiceBox.setItems(observableGeneros);
 	}
 
 	public Object convertString(String input, Class<?> targetType) {
@@ -242,57 +465,45 @@ public class ControllerTelaPrincipal {
 				return new java.sql.Date(utilDate.getTime());
 
 			} else if (targetType == Time.class) {
-				return Time.valueOf(input); 
-
-			} else if (targetType == Integer.class) {
-				return Integer.parseInt(input); 
+				return Time.valueOf(input);
 
 			} else {
 				throw new IllegalArgumentException("Tipo de conversão não suportado: " + targetType.getName());
 			}
 		} catch (ParseException e) {
-	        return null;		
-	    } catch (IllegalArgumentException e) {
-	        return null;		
+			return null;
+		} catch (IllegalArgumentException e) {
+			return null;
 		}
 	}
-	
-	
 
-	public void inputGeneroOpcoes(ChoiceBox<String> ChoiceBox) {
-
-		List<String> listaGeneros = daoFilme.obterGeneros();
-		ObservableList<String> observableGeneros = FXCollections.observableArrayList(listaGeneros);
-
-		ChoiceBox.setItems(observableGeneros);
-	}
-
-	private void confirmaDelete(Stage owner, Filme filme) {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.initOwner(owner); // Associa o alerta à janela principal
-		alert.setTitle("Confirmar Exclusão");
-		alert.setHeaderText("Deseja realmente deletar este filme?");
-
-		ButtonType buttonYes = new ButtonType("Sim");
-		ButtonType buttonNo = new ButtonType("Não");
-
-		alert.getButtonTypes().setAll(buttonYes, buttonNo);
-
-		alert.showAndWait().ifPresent(response -> {
-			if (response == buttonYes) {
-				daoFilme.removerFilme(filme);
-				atualizarListaEInterface(filme);
+	public void formataInputClassificao(TextField textField) {
+		textField.setTextFormatter(new TextFormatter<>(change -> {
+			String newText = change.getControlNewText();
+			// Permite apenas números (dígitos de 0 a 9)
+			if (newText.matches("\\d*")) {
+				return change; // Aceita a mudança
 			}
-		});
+
+			NotificationManager.showNotification("Erro", "O Campo CLASSIFICAÇÃO não aceita caracteres não numéricos!",
+					NotificationType.ERROR);
+			return null; // Rejeita a mudança se não for número
+		}));
 	}
 
-	private void atualizarListaEInterface(Filme filmeRemovido) {
-
-		if (filmeRemovido.getStatusFilme()) {
-			tipoFilme(new ActionEvent(filmesCartaz, null)); // Atualiza a lista de filmes em cartaz
-		} else {
-			tipoFilme(new ActionEvent(filmesEmBreve, null)); // Atualiza a lista de filmes em breve
+	private int getStatusFilmeSelecionado(ToggleGroup group, RadioButton radio1, RadioButton radio2) {
+		if (group.getSelectedToggle() == radio1) {
+			return 0;
+		} else if (group.getSelectedToggle() == radio2) {
+			return 1;
 		}
-		mostrarFilmes();
+		return -1; // Valor padrão caso nada esteja selecionado
+	}
+
+	public static Date convertLocalDateToSqlDate(LocalDate localDate) {
+		if (localDate == null) {
+			return null;
+		}
+		return Date.valueOf(localDate);
 	}
 }

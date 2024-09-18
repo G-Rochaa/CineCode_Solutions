@@ -17,4 +17,5 @@ module cineCode_2 {
 	requires org.hibernate.orm.core;
 	requires java.management;
 	requires org.controlsfx.controls;
+	requires java.desktop;
   }
