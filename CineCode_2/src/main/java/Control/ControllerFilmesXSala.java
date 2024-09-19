@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -19,6 +21,9 @@ public class ControllerFilmesXSala { // Classe criar para mostrar os filmes em c
 
 	@FXML
 	private VBox regiaoCentralFilmeXSala;
+	
+	@FXML
+	private VBox subRegiaoCentralFilmeXSala;
 
 	DaoFilme<Filme> filmes = new DaoFilme<>(Filme.class);
 	
@@ -33,6 +38,21 @@ public class ControllerFilmesXSala { // Classe criar para mostrar os filmes em c
 	        return;
 	    }
 	    
+	    if (listFilme.size() >= 10) {
+	        if (!(regiaoCentralFilmeXSala.getParent() instanceof ScrollPane)) {
+	            ScrollPane scrollPane = new ScrollPane();
+	            scrollPane.setFitToWidth(true);
+	            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+	            scrollPane.setContent(regiaoCentralFilmeXSala); // Coloca a VBox no ScrollPane
+
+	            BorderPane parent = (BorderPane) regiaoCentralFilmeXSala.getParent();
+	            parent.setCenter(scrollPane); 
+	        }
+	    }
+
+
+	    	    
 	    for (Filme filme : listFilme) {
 	        HBox HboxChild = new HBox();
 	        HboxChild.getStyleClass().add("HboxChildSessao");
@@ -71,7 +91,7 @@ public class ControllerFilmesXSala { // Classe criar para mostrar os filmes em c
 	        HboxButton.getChildren().addAll(buttonFilme);
 	        
 	        HboxChild.getChildren().addAll(HboxButton);
-	        
+	        	        
 	        regiaoCentralFilmeXSala.getChildren().add(HboxChild);
 
 	    }

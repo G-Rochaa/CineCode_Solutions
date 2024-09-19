@@ -9,10 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import Model.DaoFilme;
-import Model.DaoSala;
 import Model.Filme;
 import Model.Genero;
-import Model.Salas;
 import View.NotificationManager;
 import View.NotificationManager.NotificationType;
 import javafx.collections.FXCollections;
@@ -26,14 +24,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -82,7 +77,24 @@ public class ControllerTelaPrincipal {
 		});
 
 		InserirFilme.setOnAction(e -> {
-			cadastroFilme();
+			try {
+				
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/CadastroFilme.fxml"));
+                Parent subPage = loader.load();
+                
+                String css = this.getClass().getResource("/View/CadastroFilme.css").toExternalForm();
+                subPage.getStylesheets().add(css);
+                
+                ControllerCadastroFilmes controller = loader.getController();
+                
+
+                regiaoCentral.getChildren().clear();
+                regiaoCentral.getChildren().add(subPage);
+
+		    } catch (IOException ex) {
+		        ex.printStackTrace();
+		        // Exibir uma notificação de erro ou mensagem
+		    }
 		});
 
 		Sessao.setOnAction(e -> {
@@ -90,129 +102,6 @@ public class ControllerTelaPrincipal {
 		});
 	}
 
-	@FXML
-	private void cadastroFilme() {
-		VBox accessedHBox = (VBox) regiaoCentral.getChildren().get(0);
-		accessedHBox.getChildren().clear();
-
-		VBox vboxEditarFather = new VBox();
-		vboxEditarFather.getStyleClass().add("vboxEditarFather");
-
-		accessedHBox.getChildren().add(vboxEditarFather);
-
-		HBox forms1 = new HBox();
-		forms1.getStyleClass().add("forms");
-		Label nome_filme = new Label("Nome do filme: ");
-		TextField inputNomeFilme = new TextField(); // Nome
-		forms1.getChildren().addAll(nome_filme, inputNomeFilme);
-		nome_filme.getStyleClass().add("LabelEditar");
-		inputNomeFilme.getStyleClass().add("inputLabel");
-
-		HBox forms2 = new HBox();
-		forms2.getStyleClass().add("forms");
-		Label classificacao = new Label("Classificacao: "); // Classificação
-		TextField inputClassificacao = new TextField();
-		forms2.getChildren().addAll(classificacao, inputClassificacao);
-		classificacao.getStyleClass().add("LabelEditar");
-		inputClassificacao.getStyleClass().add("inputLabel");
-		formataInputClassificao(inputClassificacao);
-
-		HBox forms3 = new HBox();
-		forms3.getStyleClass().add("forms");
-		Label genero = new Label("Gênero "); // Genero
-		ChoiceBox<String> inputGenero = new ChoiceBox<>();
-		inputGeneroOpcoes(inputGenero);
-		forms3.getChildren().addAll(genero, inputGenero);
-		genero.getStyleClass().add("LabelEditar");
-		inputGenero.getStyleClass().add("inputLabel");
-
-		inputGenero.getSelectionModel().selectedItemProperty().addListener((obs, oldGenero, newGenero) -> {
-			String nomeGeneroSelecionado2 = inputGenero.getValue();
-			generoSelecionado = daoFilme.obterGeneroPorNome(nomeGeneroSelecionado2);
-		});
-
-		HBox forms4 = new HBox();
-		forms4.getStyleClass().add("forms");
-		Label sinopse = new Label("Sinopse: ");
-		TextArea inputSinopse = new TextArea(); // sinopse
-		forms4.getChildren().addAll(sinopse, inputSinopse);
-		sinopse.getStyleClass().add("LabelEditar");
-		inputSinopse.getStyleClass().add("inputLabel");
-
-		HBox forms5 = new HBox();
-		forms5.getStyleClass().add("forms");
-		Label autor = new Label("Autor: ");
-		TextField inputAutor = new TextField(); // Autor
-		forms5.getChildren().addAll(autor, inputAutor);
-		autor.getStyleClass().add("LabelEditar");
-		inputAutor.getStyleClass().add("inputLabel");
-
-		HBox forms6 = new HBox();
-		forms6.getStyleClass().add("forms");
-		Label duracao = new Label("Duração: ");
-		TextField inputDuracao = new TextField(); // Duração
-		forms6.getChildren().addAll(duracao, inputDuracao);
-		duracao.getStyleClass().add("LabelEditar");
-		inputDuracao.getStyleClass().add("inputLabel");
-
-		HBox forms7 = new HBox();
-		forms7.getStyleClass().add("forms"); // Ano de Lançamento
-		Label labelAnoLançamento = new Label("Ano Laçamento: ");
-		labelAnoLançamento.getStyleClass().add("LabelEditar");
-		DatePicker inputAnoLançamento = new DatePicker();
-
-		inputAnoLançamento.setOnAction(e -> {
-			anoLancamento = inputAnoLançamento.getValue();
-
-		});
-
-		forms7.getChildren().addAll(labelAnoLançamento, inputAnoLançamento);
-		inputAnoLançamento.getStyleClass().add("LabelEditar");
-
-		HBox forms8 = new HBox();
-		forms8.getStyleClass().add("forms_Status_Filme");
-		Label statusFilme = new Label("Status Filme: "); // Status_Filme
-		statusFilme.getStyleClass().add("LabelEditar");
-		ToggleGroup group = new ToggleGroup();
-		RadioButton radio1 = new RadioButton("Em Breve");
-		RadioButton radio2 = new RadioButton("Em Cartaz");
-		radio1.setToggleGroup(group);
-		radio2.setToggleGroup(group);
-		forms8.getChildren().addAll(statusFilme, radio1, radio2);
-
-		HBox forms9 = new HBox();
-		forms9.getStyleClass().add("forms");
-		Label img = new Label("Link da Imagem: "); // Img
-		TextField inputImg = new TextField();
-		forms9.getChildren().addAll(img, inputImg);
-		img.getStyleClass().add("LabelEditar");
-		inputImg.getStyleClass().add("inputLabel");
-
-		HBox forms11 = new HBox();
-		Button salvar = new Button("Salvar");
-		salvar.setOnAction(e -> {
-
-			if (daoFilme.cadastrarFilme(inputNomeFilme.getText(), convertLocalDateToSqlDate(anoLancamento),
-					generoSelecionado, inputAutor.getText(), (Time) convertString(inputDuracao.getText(), Time.class),
-					getStatusFilmeSelecionado(group, radio1, radio2), inputClassificacao.getText(),
-					inputSinopse.getText(), inputImg.getText())) {
-				cadastroFilme();
-			}
-
-		});
-
-		Button cancelar = new Button("Cancelar");
-		cancelar.setOnAction(e -> {
-			cadastroFilme();
-		});
-		forms11.getStyleClass().add("forms");
-		forms11.getChildren().addAll(salvar, cancelar);
-		forms11.getStyleClass().add("forms5");
-
-		vboxEditarFather.getChildren().addAll(forms1, forms2, forms3, forms4, forms5, forms6, forms7, forms8, forms9,
-				forms11);
-
-	}
 
 	@FXML
 	private void mostrarFilmes(String titulo) {
@@ -489,15 +378,6 @@ public class ControllerTelaPrincipal {
 					NotificationType.ERROR);
 			return null; // Rejeita a mudança se não for número
 		}));
-	}
-
-	private int getStatusFilmeSelecionado(ToggleGroup group, RadioButton radio1, RadioButton radio2) {
-		if (group.getSelectedToggle() == radio1) {
-			return 0;
-		} else if (group.getSelectedToggle() == radio2) {
-			return 1;
-		}
-		return -1; // Valor padrão caso nada esteja selecionado
 	}
 
 	public static Date convertLocalDateToSqlDate(LocalDate localDate) {

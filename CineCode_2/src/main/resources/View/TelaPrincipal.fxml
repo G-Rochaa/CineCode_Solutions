@@ -59,7 +59,7 @@
 	<!-- Região do Centro -->
 	<VBox fx:id="regiaoCentral" AnchorPane.leftAnchor="400"
 		AnchorPane.rightAnchor="100" AnchorPane.topAnchor="200"
-		AnchorPane.bottomAnchor="0">
+		AnchorPane.bottomAnchor="20">
 
 		<VBox styleClass="center-Vbox">
 			<Label text="Bem-Vindo, Usuário!" styleClass="center-label1" />

@@ -76,7 +76,6 @@
 
 /*REGIÃO CENTRAL INICIO: */
 
-
 .VboxFilmesCartaz{ /*Pai de todos os elementos gerados pelo botão Filmes em Cartaz*/
     -fx-padding: 10.0;
     -fx-border-color: blue; 

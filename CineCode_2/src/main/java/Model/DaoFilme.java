@@ -102,6 +102,8 @@ public class DaoFilme<E> {
 			em.persist(filme);
 			fecharT();
 			
+		    NotificationManager.showNotification("Sucesso!", "Filme inserido com sucesso", NotificationType.SUCCESS);
+			
 			return true;
 		}
 		
@@ -115,7 +117,6 @@ public class DaoFilme<E> {
 			filme.setStatusFilme(2);
 			NotificationManager.showNotification("Sucesso", "Filme desativado com sucesso!", NotificationType.SUCCESS);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
@@ -130,7 +131,11 @@ public class DaoFilme<E> {
 		return query.getResultList();
 	}
 
-	public Genero obterGeneroPorNome(String nomeGenero) {
+	public Genero obterGeneroPorNome(String nomeGenero) {	
+		if (nomeGenero == null) {
+			return null;
+		} // Qnd o usuário clica no botão cancelar e já cadastrou um filme evita erros
+		
 		String jpql = "SELECT g FROM Genero g WHERE g.nome_genero = :nomeGenero";
 		TypedQuery<Genero> query = em.createQuery(jpql, Genero.class);
 		query.setParameter("nomeGenero", nomeGenero);
@@ -274,7 +279,6 @@ public class DaoFilme<E> {
 	        return false;
 	    }
 	    
-	    NotificationManager.showNotification("Sucesso!", "Filme inserido com sucesso", NotificationType.SUCCESS);
 	    return true;
 	}
 

@@ -7,8 +7,9 @@
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="Control.ControllerFilmesXSala">
 	<center>
-		<VBox styleClass="vbox-center-mae" fx:id="regiaoCentralFilmeXSala">
-			
+		<VBox styleClass="vbox-center-mae"
+			fx:id="regiaoCentralFilmeXSala">
+
 		</VBox>
 	</center>
 </BorderPane>
