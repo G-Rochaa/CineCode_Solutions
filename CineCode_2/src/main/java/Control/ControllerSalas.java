@@ -52,7 +52,6 @@ public class ControllerSalas { // Classe feita para chamar os botões das salas
 					regiaoCentralSalas.getChildren().clear();
 					regiaoCentralSalas.getChildren().add(subPage);
 					
-					// Passar o daoSessao e a salaEscolhida para o próximo controlador
                     ControllerFilmesXSala controller = loader.getController();
                     controller.setDaoSessao(daoSessao);
                     controller.setSalaEscolhida(salaEscolhida);

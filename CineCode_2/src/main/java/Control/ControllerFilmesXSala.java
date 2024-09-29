@@ -73,7 +73,6 @@ public class ControllerFilmesXSala { // Classe criar para mostrar os filmes em c
 	                String css = this.getClass().getResource("/View/FormsSessao.css").toExternalForm();
 	                subPage.getStylesheets().add(css);
 
-	                // Passar o daoSessao para o próximo controlador
 	             // Passar o daoSessao e a salaEscolhida para o próximo controlador
                     ControllerFormsSessao controller = loader.getController();
                     controller.setDaoSessao(daoSessao);

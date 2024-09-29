@@ -107,29 +107,23 @@ public class ControllerCadastroFilmes {
 	}
     
     public void limpaCampos() {
-        // Limpar TextFields
+
         inputNomeFilme.clear();
         inputClassificacao.clear();
         inputAutor.clear();
         inputDuracao.clear();
         inputImg.clear();
 
-        // Limpar TextArea
         inputSinopse.clear();
 
-        // Limpar DatePicker
         inputAnoLançamento.setValue(null);
 
-        // Limpar ChoiceBox
         inputGenero.setValue(null);
 
-        // Limpar RadioButtons
         ToggleGroup group = (ToggleGroup) radio1.getToggleGroup();
         if (group != null) {
             group.selectToggle(null);
         }
-
-        // Opcional: Reiniciar a variável anoLancamento
         anoLancamento = null;
     }
     

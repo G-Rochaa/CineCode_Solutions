@@ -11,6 +11,10 @@ import javax.persistence.TypedQuery;
 
 import View.NotificationManager;
 import View.NotificationManager.NotificationType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 
 public class DaoFilme<E> {
 	private static EntityManagerFactory emf;
@@ -66,7 +70,7 @@ public class DaoFilme<E> {
 		String jpql = "SELECT e FROM " + classe.getName() + " e";
 		TypedQuery<E> query = em.createQuery(jpql, classe);
 
-		return query.getResultList(); // Resultado do SELECT
+		return query.getResultList(); 
 	}
 
 	public List<E> obterTodosEmCartaz() {
@@ -78,7 +82,7 @@ public class DaoFilme<E> {
 
 		TypedQuery<E> query = em.createQuery(jpql, classe);
 
-		return query.getResultList(); // Resultado do SELECT
+		return query.getResultList(); 
 	}
 
 	public List<E> obterTodosEmBreve() {
@@ -90,7 +94,13 @@ public class DaoFilme<E> {
 
 		TypedQuery<E> query = em.createQuery(jpql, classe);
 
-		return query.getResultList(); // Resultado do SELECT
+		return query.getResultList();
+	}
+	
+	public void inputGeneroOpcoes(ChoiceBox<String> choiceBox) {
+		List<String> listaGeneros = obterNomesGeneros();
+		ObservableList<String> observableGeneros = FXCollections.observableArrayList(listaGeneros);
+		choiceBox.setItems(observableGeneros);
 	}
 
 	public Boolean cadastrarFilme(String nome, Date anoLancamento, Genero genero, String autor, Time duracao,
@@ -111,7 +121,7 @@ public class DaoFilme<E> {
 	}
 
 	public void removerFilme(Filme filme) {
-		abrirT(); // Inicia a transação
+		abrirT(); 
 		
 		try {
 			filme.setStatusFilme(2);
@@ -139,11 +149,12 @@ public class DaoFilme<E> {
 		String jpql = "SELECT g FROM Genero g WHERE g.nome_genero = :nomeGenero";
 		TypedQuery<Genero> query = em.createQuery(jpql, Genero.class);
 		query.setParameter("nomeGenero", nomeGenero);
-		return query.getSingleResult(); // Vai retornar o objeto Genero correspondente
+		return query.getSingleResult(); 
 	}
-
+	
 	public void updateFilme(Filme filme, String nome, String classificacao, Genero genero, String sinopse, String autor,
-			Date anoLancamento, Time duracao) {
+			Date anoLancamento, Time duracao, CheckBox statusFilme) {
+		
 		abrirT();
 		try {
 			boolean isModified = false;
@@ -154,7 +165,6 @@ public class DaoFilme<E> {
 				isModified = true;
 			} else if (nome.isEmpty()) {
 				isNotVazio = false;
-				System.out.println(isNotVazio);
 			}
 
 			if (!classificacao.isEmpty() && !filme.getClassificacao().equals(classificacao)) {
@@ -162,7 +172,6 @@ public class DaoFilme<E> {
 				isModified = true;
 			} else if (classificacao.isEmpty()) {
 				isNotVazio = false;
-				System.out.println(isNotVazio);
 			}
 
 			if (!filme.getGenero().equals(genero)) {
@@ -172,10 +181,10 @@ public class DaoFilme<E> {
 
 			if (!sinopse.isEmpty() && !filme.getSinopse().equals(sinopse)) {
 				filme.setSinopse(sinopse);
+				System.out.println(filme.getSinopse());
 				isModified = true;
 			} else if (sinopse.isEmpty()) {
 				isNotVazio = false;
-				System.out.println(isNotVazio);
 			}
 
 			if (!autor.isEmpty() && !filme.getAutor().equals(autor)) {
@@ -183,7 +192,6 @@ public class DaoFilme<E> {
 				isModified = true;
 			} else if (autor.isEmpty()) {
 				isNotVazio = false;
-				System.out.println(isNotVazio);
 			}
 
 			if (anoLancamento != null && !filme.getAnoLancamento().equals(anoLancamento)) {
@@ -199,8 +207,16 @@ public class DaoFilme<E> {
 			} else if (duracao == null) {
 				isNotVazio = false;
 			}
+			
+			if (statusFilme == null) {
+				
+			} else if (statusFilme.isSelected()) {
+				filme.setStatusFilme(1);
+				isModified = true;
+			}
 
 			if (isModified && isNotVazio) {
+				em.merge(filme); // Salva as alterações
 				fecharT();
 				NotificationManager.showNotification("Sucesso", "Filme atualizado com sucesso.",
 						NotificationType.SUCCESS);
@@ -214,6 +230,7 @@ public class DaoFilme<E> {
 						NotificationType.INFORMATION);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			em.getTransaction().rollback();
 			NotificationManager.showNotification("Erro", "A atualização do filme falhou devido a um erro inesperado.",
 					NotificationType.ERROR);
@@ -229,14 +246,12 @@ public class DaoFilme<E> {
 	        return false;
 	    }
 	    
-	    // Verifica se anoLancamento é nulo
 	    if (anoLancamento == null) {
 	        em.getTransaction().rollback();
 	        NotificationManager.showNotification("Erro", "O Campo ANO DE LANÇAMENTO está vazio", NotificationType.ERROR);
 	        return false;
 	    }
 	    
-	    // Adicione mais validações conforme necessário
 	    if (genero == null) {
 	        em.getTransaction().rollback();
 	        NotificationManager.showNotification("Erro", "O Campo GÊNERO está vazio", NotificationType.ERROR);

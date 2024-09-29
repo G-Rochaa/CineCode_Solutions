@@ -76,7 +76,6 @@ public class ControllerFormsSessao {
         sessaoDao.capturaDataSessao(dataSessao);
         
         Boolean result = sessaoDao.insertSessao(sessao);
-        //Chamada do método Insert Sessão
         
         if (result) {
         	limpaCampos();
