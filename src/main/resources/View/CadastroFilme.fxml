@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<VBox xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="Control.ControllerCadastroFilmes">
+    <VBox fx:id="vboxEditarFather" styleClass="vboxEditarFather">
+
+        <HBox styleClass="forms">
+            <Label text="Nome do filme:" styleClass="LabelEditar"/>
+            <TextField fx:id="inputNomeFilme" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Classificação" styleClass="LabelEditar"/>
+            <ChoiceBox fx:id="inputClassificacao" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Gênero" styleClass="LabelEditar"/>
+            <ChoiceBox fx:id="inputGenero" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Sinopse:" styleClass="LabelEditar"/>
+            <TextArea fx:id="inputSinopse" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Diretor:" styleClass="LabelEditar"/>
+            <TextField fx:id="inputDiretor" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Duração:" styleClass="LabelEditar"/>
+            <TextField fx:id="inputDuracao" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Data de Laçamento:" styleClass="LabelEditar"/>
+            <DatePicker fx:id="inputDataLancamento" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms_Status_Filme">
+            <Label text="Status Filme:" styleClass="LabelEditar"/>
+            <RadioButton text="Em Breve" fx:id="radio1"/>
+            <RadioButton text="Em Cartaz" fx:id="radio2"/>
+        </HBox>
+
+        <HBox styleClass="forms">
+            <Label text="Link da Imagem:" styleClass="LabelEditar"/>
+            <TextField fx:id="inputImg" styleClass="inputLabel"/>
+        </HBox>
+
+        <HBox styleClass="forms5">
+            <Button text="Salvar" fx:id="salvar"/>
+            <Button text="Cancelar" fx:id="cancelar"/>
+        </HBox>
+
+    </VBox>
+</VBox>

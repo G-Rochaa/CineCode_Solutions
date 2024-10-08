@@ -1,0 +1,14 @@
+.HboxChildSessao{
+	-fx-border-style: solid;
+	-fx-border-color: black;
+	-fx-alignment: center; 
+}
+
+.HboxButtonsSessao{
+	-fx-spacing: 25.0px;    
+	-fx-border-color: green;	
+}
+
+.buttonFilme{
+	-fx-pref-width: 600.0;  
+}
