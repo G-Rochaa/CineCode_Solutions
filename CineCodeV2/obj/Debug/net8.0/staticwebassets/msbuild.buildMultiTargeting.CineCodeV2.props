@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CineCodeV2.props" />
+</Project>

@@ -1,0 +1,8 @@
+.btn-custom {
+    background-color: #01101d; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Remove bordas */
+    box-shadow: none; /* Remove sombras */
+    border-radius: 0; /* Remove arredondamento */
+    transition: none; /* Remove transições */
+  }

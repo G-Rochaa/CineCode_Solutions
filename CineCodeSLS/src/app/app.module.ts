@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './pages/DashBoard/dashboard.component';
 import { CardsComponent } from './shared/cards/cards.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { CartazComponent } from './pages/Programação/em-cartaz/cartaz.component';
-import { BreveComponent } from './pages/Programação/em-breve/breve.component';
+import { CartazComponent } from './pages/em-cartaz/cartaz.component';
+import { BreveComponent } from './pages/em-breve/breve.component';
+import { NavComponent } from './shared/nav/nav.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,10 +17,13 @@ import { BreveComponent } from './pages/Programação/em-breve/breve.component';
     CardsComponent,
     FooterComponent,
     CartazComponent,
-    BreveComponent],
+    BreveComponent,
+    NavComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
