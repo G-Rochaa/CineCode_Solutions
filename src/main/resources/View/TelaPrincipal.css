@@ -1,0 +1,190 @@
+.left-vbox {
+	-fx-pref-width: 250.0px; 
+	-fx-alignment: center;
+	-fx-border-color: black; 
+	-fx-border-width: 2.0px; 
+	-fx-border-style: solid;
+	-fx-spacing: 50.0;
+}
+
+.borderPaneLeft {
+	-fx-pref-height: 600.0px;
+}
+
+.vbox-center-mae {
+	-fx-alignment: top-center;
+	-fx-spacing: 15.0;
+	-fx-padding: 20.0 0.0 0.0 0.0;
+}
+
+.vbox-center-filho {
+	-fx-spacing: 30.0;
+	-fx-alignment: center;
+}
+
+.top-pane { /* Parte de cima do layout */
+	-fx-pref-height: 150.0px; 
+	-fx-alignment: center_right;
+	-fx-padding: 50.0;
+		-fx-border-color: red; 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+}
+
+.top-label { /*Armazena o os dados do login do usuário */
+	-fx-font-size: 24.0px;
+	-fx-text-fill: white;
+	
+}
+
+.left-label {
+	-fx-font-size: 28.0px;
+	-fx-text-fill: white;
+}
+
+.center-Vbox { /*Armazena o Bem-Usuário, Descrição */
+	-fx-border-color: white; 
+	-fx-border-width: 2.0px;
+	-fx-alignment: TOP_CENTER;
+	-fx-spacing: 10.0;	
+	-fx-background-color: white;
+	-fx-border-color: black; 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+}
+
+.center-label1 { /*Bem-Usuário */
+	-fx-font-size: 48.0px;
+	-fx-text-fill: black;
+	-fx-alignment: CENTER;
+	-fx-font-weight: bold; 
+}
+
+.center-label2 { /*Descrição do Bem-Vindo */
+	-fx-font-size: 17.0px;
+	-fx-text-fill: black;
+	-fx-alignment: CENTER;
+}
+
+
+.VboxCadastroFilme{
+	-fx-padding: 10.0;
+    -fx-border-color: blue; 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+}
+
+/*REGIÃO CENTRAL INICIO: */
+
+.VboxFilmesCartaz{ /*Pai de todos os elementos gerados pelo botão Filmes em Cartaz*/
+    -fx-padding: 10.0;
+    -fx-border-color: blue; 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+}
+
+.HBoxTituloConteiner{ /*Armazena o título filmes em Cartaz */
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-pref-height: 200px;
+    -fx-alignment: center-left;
+    -fx-background-color: black;
+}
+
+.HBoxTituloLabel{ /*Label do titulo filmes em cartaz */
+	-fx-background-color: WHITE;
+	-fx-text-fill: black;        
+    -fx-font-weight: bold;       
+    -fx-font-size: 24.0px;
+    -fx-pref-width: 600;
+    -fx-padding: 15px;
+}
+
+
+.VboxFilmes{ /*Armazena os filmes obtidos via banco */ 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-padding: 3.0;
+    -fx-spacing: 10.0px;
+    -fx-border-color: pink; 
+}
+
+ 
+.HboxChild{ /*Armazena cada filme obtido pelo banco (Cada linha de filme) */
+	-fx-border-style: solid;
+}
+
+.HboxLabel{ /*Armazena o Label do titulo do filme */
+	-fx-pref-width: 600.0;  
+}
+
+.labelFilme { /*Literalmente o label do filme */
+    -fx-font-size: 18.0px; 
+    -fx-font-weight: bold; 
+    -fx-alignment: center-left; 
+}
+
+
+.HboxButtons{ /*Armazena os botões Editar e Remover */
+    -fx-spacing: 25.0px;    
+}
+
+.vboxEditarFather{
+	-fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-pref-width: 300.0;  
+    -fx-padding: 5;
+    -fx-spacing: 5;
+}
+
+.forms{
+	-fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-padding: 5;
+}
+
+.forms_Status_Filme{
+	-fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-padding: 5;
+    -fx-spacing: 10;
+}
+
+
+.inputLabel{
+    -fx-pref-width: 400.0; 
+    -fx-alignment: center-left; 
+    -fx-border-radius: 20px;
+}
+
+.LabelEditar{
+	-fx-alignment: center; 
+	-fx-font-size: 18.0px; 
+    -fx-font-weight: bold; 
+    -fx-pref-width: 200.0; 
+}
+
+.forms5{
+	-fx-alignment: center; 
+	-fx-spacing: 25;
+}
+
+.HboxChildRemover{
+	-fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-padding: 5;
+    -fx-pref-width: 200.0; 
+    -fx-spacing: 10;
+}
+
+.HboxLabelRemover{
+	-fx-pref-width: 600.0; 
+	-fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+	
+}
+
+
+
+
+
