@@ -1,0 +1,274 @@
+CREATE SCHEMA IF NOT EXISTS `cinecode` DEFAULT CHARACTER SET utf8 ;
+USE `cinecode` ;
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_Genero`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_Genero` (
+  `id_genero` INT NOT NULL AUTO_INCREMENT,
+  `nome_genero` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_genero`),
+  UNIQUE INDEX `id_genero_UNIQUE` (`id_genero` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_Classificacao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_Classificacao` (
+  `idTb_Classificacao` INT NOT NULL AUTO_INCREMENT,
+  `classificacao` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idTb_Classificacao`),
+  UNIQUE INDEX `idTb_Classificacao_UNIQUE` (`idTb_Classificacao` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_filmes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_filmes` (
+  `id_filme` INT NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(100) NOT NULL,
+  `data_lancamento` DATE NOT NULL,
+  `diretor` VARCHAR(45) NOT NULL,
+  `duracao` TIME NOT NULL,
+  `status_filme` INT NOT NULL,
+  `sinopse` TEXT NOT NULL,
+  `imagem` VARCHAR(255) NOT NULL,
+  `Id_genero` INT NOT NULL,
+  `idTb_Classificacao` INT NOT NULL,
+  PRIMARY KEY (`id_filme`),
+  INDEX `fk_Tb_filmes_Tb_Genero1_idx` (`Id_genero` ASC),
+  INDEX `fk_Tb_filmes_Tb_Classificacao1_idx` (`idTb_Classificacao` ASC),
+  CONSTRAINT `fk_Tb_filmes_Tb_Genero1`
+    FOREIGN KEY (`Id_genero`)
+    REFERENCES `cinecode`.`Tb_Genero` (`id_genero`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tb_filmes_Tb_Classificacao1`
+    FOREIGN KEY (`idTb_Classificacao`)
+    REFERENCES `cinecode`.`Tb_Classificacao` (`idTb_Classificacao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_tipo_ingresso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_tipo_ingresso` (
+  `idTipo_Ingresso` INT NOT NULL AUTO_INCREMENT,
+  `Tipo_Ingresso` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idTipo_Ingresso`),
+  UNIQUE INDEX `idTipo_Ingresso_UNIQUE` (`idTipo_Ingresso` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_Salas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_Salas` (
+  `Nr_Sala` INT NOT NULL,
+  `Qnt_Assentos` INT NULL,
+  PRIMARY KEY (`Nr_Sala`),
+  UNIQUE INDEX `idTb_Salas_UNIQUE` (`Nr_Sala` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_Sessao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_Sessao` (
+  `id_Filme` INT NOT NULL,
+  `Nr_Sala` INT NOT NULL,
+  `Id_Sessao` INT NOT NULL AUTO_INCREMENT,
+  `Horario_Inicio` TIME NOT NULL,
+  `Data` DATE NOT NULL,
+  `Horario_Fim` TIME NOT NULL,
+  INDEX `fk_tb_filmes_has_Tb_Salas_Tb_Salas1_idx` (`Nr_Sala` ASC),
+  INDEX `fk_tb_filmes_has_Tb_Salas_tb_filmes1_idx` (`id_Filme` ASC),
+  PRIMARY KEY (`Id_Sessao`),
+  UNIQUE INDEX `Id_Sessao_UNIQUE` (`Id_Sessao` ASC),
+  CONSTRAINT `fk_tb_filmes_has_Tb_Salas_tb_filmes1`
+    FOREIGN KEY (`id_Filme`)
+    REFERENCES `cinecode`.`Tb_filmes` (`id_filme`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_filmes_has_Tb_Salas_Tb_Salas1`
+    FOREIGN KEY (`Nr_Sala`)
+    REFERENCES `cinecode`.`Tb_Salas` (`Nr_Sala`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_cadastro_cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_cadastro_cliente` (
+  `id_cadastro` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `cpf` VARCHAR(11) NOT NULL,
+  `dt_nascimento` DATE NOT NULL,
+  `telefone` VARCHAR(15) NOT NULL,
+  `senha` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`id_cadastro`, `email`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_ingresso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_ingresso` (
+  `id_ingresso` INT NOT NULL AUTO_INCREMENT,
+  `preco` DOUBLE NOT NULL,
+  `idTipo_Ingresso` INT NOT NULL,
+  `Id_Sessao` INT NOT NULL,
+  `id_cliente` INT NOT NULL,
+  PRIMARY KEY (`id_ingresso`),
+  INDEX `fk_Tb_ingresso_Tipo_Ingresso1_idx` (`idTipo_Ingresso` ASC),
+  INDEX `fk_Tb_ingresso_Tb_Sessao1_idx` (`Id_Sessao` ASC),
+  INDEX `fk_Tb_ingresso_Tb_cadastro_cliente1_idx` (`id_cliente` ASC),
+  CONSTRAINT `fk_Tb_ingresso_Tipo_Ingresso1`
+    FOREIGN KEY (`idTipo_Ingresso`)
+    REFERENCES `cinecode`.`Tb_tipo_ingresso` (`idTipo_Ingresso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tb_ingresso_Tb_Sessao1`
+    FOREIGN KEY (`Id_Sessao`)
+    REFERENCES `cinecode`.`Tb_Sessao` (`Id_Sessao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tb_ingresso_Tb_cadastro_cliente1`
+    FOREIGN KEY (`id_cliente`)
+    REFERENCES `cinecode`.`Tb_cadastro_cliente` (`id_cadastro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_compras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_compras` (
+  `id_compra` INT NOT NULL AUTO_INCREMENT,
+  `data_compra` DATE NOT NULL,
+  `Id_cliente` INT NOT NULL,
+  `qnt_ingressos` INT NOT NULL,
+  `valo_total` DOUBLE(10,2) NOT NULL,
+  PRIMARY KEY (`id_compra`),
+  INDEX `fk_Tb_compras_Tb_cadastro_cliente1_idx` (`Id_cliente` ASC),
+  CONSTRAINT `fk_Tb_compras_Tb_cadastro_cliente1`
+    FOREIGN KEY (`Id_cliente`)
+    REFERENCES `cinecode`.`Tb_cadastro_cliente` (`id_cadastro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_pagamento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_pagamento` (
+  `id_pagamento` INT NOT NULL AUTO_INCREMENT,
+  `data_pagamento` DATE NOT NULL,
+  `metodo_pagamento` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_pagamento`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_envio_comprovante`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_envio_comprovante` (
+  `id_envio` INT NOT NULL AUTO_INCREMENT,
+  `data_envio` DATE NOT NULL,
+  `id_pagamento` INT NOT NULL,
+  `id_cadastro` INT NOT NULL,
+  `cliente_email` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_envio`),
+  INDEX `fk_tb_envio_comprovante_tb_pagamento1_idx` (`id_pagamento` ASC),
+  INDEX `fk_Tb_envio_comprovante_Tb_cadastro_cliente1_idx` (`id_cadastro` ASC, `cliente_email` ASC),
+  CONSTRAINT `fk_tb_envio_comprovante_tb_pagamento1`
+    FOREIGN KEY (`id_pagamento`)
+    REFERENCES `cinecode`.`Tb_pagamento` (`id_pagamento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tb_envio_comprovante_Tb_cadastro_cliente1`
+    FOREIGN KEY (`id_cadastro` , `cliente_email`)
+    REFERENCES `cinecode`.`Tb_cadastro_cliente` (`id_cadastro` , `email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`tb_usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`tb_usuario` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`id_usuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tipo_Assento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tipo_Assento` (
+  `idTipo_Assento` INT NOT NULL AUTO_INCREMENT,
+  `Descricao` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idTipo_Assento`),
+  UNIQUE INDEX `idTipo_Assento_UNIQUE` (`idTipo_Assento` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_Assentos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_Assentos` (
+  `Id_Assento` INT NOT NULL AUTO_INCREMENT,
+  `Numeracao` VARCHAR(45) NOT NULL,
+  `idTipo_Assento` INT NOT NULL,
+  `Nr_Sala` INT NOT NULL,
+  INDEX `fk_Tb_Assentos_Tipo_Assento_idx` (`idTipo_Assento` ASC),
+  PRIMARY KEY (`Id_Assento`, `Numeracao`),
+  INDEX `fk_Tb_Assentos_Tb_Salas1_idx` (`Nr_Sala` ASC),
+  CONSTRAINT `fk_Tb_Assentos_Tipo_Assento`
+    FOREIGN KEY (`idTipo_Assento`)
+    REFERENCES `cinecode`.`Tipo_Assento` (`idTipo_Assento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tb_Assentos_Tb_Salas1`
+    FOREIGN KEY (`Nr_Sala`)
+    REFERENCES `cinecode`.`Tb_Salas` (`Nr_Sala`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinecode`.`Tb_assentos_por_sessao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinecode`.`Tb_assentos_por_sessao` (
+  `Id_Assento` INT NOT NULL,
+  `Numeracao` VARCHAR(45) NOT NULL,
+  `Id_Sessao` INT NOT NULL,
+  `Status_Assento` INT NOT NULL COMMENT '0 - DISPONIVEL, 1 - OCUPADO',
+  PRIMARY KEY (`Id_Assento`, `Numeracao`, `Id_Sessao`),
+  INDEX `fk_Tb_Assentos_has_Tb_Sessao_Tb_Sessao1_idx` (`Id_Sessao` ASC),
+  INDEX `fk_Tb_Assentos_has_Tb_Sessao_Tb_Assentos1_idx` (`Id_Assento` ASC, `Numeracao` ASC),
+  CONSTRAINT `fk_Tb_Assentos_has_Tb_Sessao_Tb_Assentos1`
+    FOREIGN KEY (`Id_Assento`, `Numeracao`)
+    REFERENCES `cinecode`.`Tb_Assentos` (`Id_Assento`, `Numeracao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tb_Assentos_has_Tb_Sessao_Tb_Sessao1`
+    FOREIGN KEY (`Id_Sessao`)
+    REFERENCES `cinecode`.`Tb_Sessao` (`Id_Sessao`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+ENGINE = InnoDB;
