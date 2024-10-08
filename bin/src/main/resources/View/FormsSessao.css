@@ -1,0 +1,37 @@
+.vbox-center-mae-sessao{
+	-fx-border-color: black;	
+	-fx-spacing: 30.0;
+}
+
+.HboxlabelSessao{
+	-fx-border-color: black;
+	-fx-alignment: center; 	
+	-fx-spacing: 30.0;
+}
+.HboxlabelSessaoData{
+	-fx-alignment: center; 	
+	-fx-border-color: black;
+	-fx-spacing: 30.0;	
+}
+
+.labelSessao{
+	-fx-border-color: black;
+	-fx-pref-width: 200.0;
+	-fx-alignment: center; 	
+	-fx-font-size: 24.0px;
+	-fx-font-weight: bold; 
+}
+
+.inputSessao{
+	-fx-pref-width: 200.0;
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+.vboxEditarFather {
+	-fx-border-width: 2.0px;
+	-fx-border-style: solid;
+	-fx-pref-width: 300.0;
+	-fx-padding: 5;
+	-fx-spacing: 5;
+	-fx-border-color: pink;
+}
+
+.forms {
+	-fx-border-width: 2.0px;
+	-fx-border-style: solid;
+	-fx-padding: 5;
+}
+
+.forms5 {
+	-fx-alignment: center;
+	-fx-spacing: 25;
+	-fx-border-width: 2.0px;
+	-fx-padding: 5;
+	-fx-border-style: solid;
+}
+
+.LabelEditar {
+	-fx-alignment: center;
+	-fx-font-size: 18.0px;
+	-fx-font-weight: bold;
+	-fx-pref-width: 200.0;
+}
+
+.inputLabel {
+	-fx-pref-width: 400.0;
+	-fx-alignment: center-left;
+	-fx-border-radius: 20px;
+}
