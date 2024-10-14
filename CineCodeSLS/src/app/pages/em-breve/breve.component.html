@@ -1,0 +1,17 @@
+<app-nav></app-nav>
+
+<section class="em-breve">
+    <h2>Em Breve</h2>
+    <div class="movies">
+        <div *ngFor="let filme of filmes" class="movie">
+            <img src="{{filme.imagem}}" alt="Imagem do Filme">
+            <div class="movie-info">
+                <h3>{{ filme.titulo }}</h3>
+                <p>{{filme.sinopse}}</p>
+                <p>{{filme.classificacao}}</p>
+                <button>Em Breve</button>
+            </div>
+        </div>
+        
+    </div>
+</section>

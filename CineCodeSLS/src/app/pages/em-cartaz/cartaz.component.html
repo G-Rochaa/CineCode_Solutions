@@ -1,0 +1,17 @@
+<app-nav></app-nav>
+
+    <section class="em-cartaz">
+        <h2>Em Cartaz</h2>
+        <div class="movies">
+        <div class="movie"  *ngFor="let filme of filmes">
+            <img src="{{filme.imagem}}" alt="Imagem do Filme">
+            <div class="movie-info">
+                <h3>{{filme.titulo}}</h3>
+                <p>{{filme.sinopse}}</p>
+                <p>Classificação indicativa:{{filme.classificacao}}.</p>
+                <p> Ano de lançamento: {{filme.anoLancamento}}</p>
+                <button>Assista Agora</button>
+            </div>
+        </div>
+    </div>
+    </section>
