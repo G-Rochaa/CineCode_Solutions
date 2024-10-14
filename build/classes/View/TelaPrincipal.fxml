@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Separator?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.ControllerTelaPrincipal">
+
+	<!-- Região do Topo -->
+	<HBox spacing="10"
+		style="-fx-background-color: #336699;" styleClass="top-pane"
+		AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="0"
+		AnchorPane.topAnchor="0">
+		<Label text="Topo - Usuário, ******" styleClass="top-label" />
+	</HBox>
+
+	<!-- Região da Esquerda -->
+	<VBox style="-fx-background-color: #99CCFF;"
+		AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0"
+		AnchorPane.bottomAnchor="0" styleClass="left-vbox">
+		<BorderPane styleClass="borderPaneLeft">
+			<top>
+				<VBox alignment="CENTER">
+					<ImageView fitWidth="200"
+						preserveRatio="true" styleClass="img-config">
+						<image>
+							<Image
+								url="file:/C:/Users/Cliente/Documents/Logo_CineCode.png" />
+						</image>
+					</ImageView>
+				</VBox>
+			</top>
+
+			<center>
+				<VBox styleClass="vbox-center-mae">
+					<Separator />
+
+					<Label text="Aplicações: " styleClass="left-label" />
+					<Separator />
+
+					<VBox styleClass="vbox-center-filho">
+						<Button fx:id="filmesCartaz" text="Filmes em cartaz"/>
+						<Button fx:id="filmesEmBreve" text="Filmes em breve" />
+						<Button fx:id="InserirFilme" text="Cadastro de filme" />
+						<Button fx:id="Sessao" text="Cadastro de sessao" />
+						<Button fx:id="editSessao" text="Editar de sessões" />
+					</VBox>
+
+				</VBox>
+			</center>
+
+		</BorderPane>
+	</VBox>
+
+
+	<!-- Região do Centro -->
+	<VBox fx:id="regiaoCentral" AnchorPane.leftAnchor="400"
+		AnchorPane.rightAnchor="100" AnchorPane.topAnchor="200"
+		AnchorPane.bottomAnchor="20">
+
+		<VBox styleClass="center-Vbox">
+			<Label text="Bem-Vindo, Usuário!" styleClass="center-label1" />
+			<Label
+				text="Aqui neste ambiente você poderá realizar alterações conforme a atualização de bilheteria!"
+				styleClass="center-label2" />
+		</VBox>
+	</VBox>
+</AnchorPane>

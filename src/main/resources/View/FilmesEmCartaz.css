@@ -1,0 +1,31 @@
+.VboxFilmesCartaz{ /*Pai de todos os elementos gerados pelo botão Filmes em Cartaz*/
+    -fx-padding: 10.0;
+    -fx-border-color: blue; 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+}
+
+.HBoxTituloConteiner{ /*Armazena o título filmes em Cartaz */
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-pref-height: 200px;
+    -fx-alignment: center-left;
+    -fx-background-color: black;
+}
+
+.HBoxTituloLabel{ /*Label do titulo filmes em cartaz */
+	-fx-background-color: WHITE;
+	-fx-text-fill: black;        
+    -fx-font-weight: bold;       
+    -fx-font-size: 24.0px;
+    -fx-pref-width: 600;
+    -fx-padding: 15px;
+}
+
+.VboxFilmes{ /*Armazena os filmes obtidos via banco */ 
+    -fx-border-width: 2.0px; 
+    -fx-border-style: solid;
+    -fx-padding: 3.0;
+    -fx-spacing: 10.0px;
+    -fx-border-color: pink; 
+}
